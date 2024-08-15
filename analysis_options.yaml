@@ -1,0 +1,6 @@
+analyzer:
+  errors:
+    constant_identifier_names: ignore
+    non_constant_identifier_names: ignore
+    use_full_hex_values_for_flutter_colors: ignore
+include: package:flutter_lints/flutter.yaml
