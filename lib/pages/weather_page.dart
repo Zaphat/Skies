@@ -57,7 +57,6 @@ class WeatherPage extends StatefulWidget {
 
 class _WeatherPageState extends State<WeatherPage> {
   late Future<void> _initializationFuture;
-
   _fetchWeatherData() async {
     try {
       final newData = await WeatherPage.weatherService.getWeatherData();
@@ -73,6 +72,13 @@ class _WeatherPageState extends State<WeatherPage> {
     } on Exception catch (e) {
       WeatherPage._logger.severe('Failed to fetch weather data: $e');
     }
+  }
+
+  Future<void> _handleRefresh() async {
+    await _fetchWeatherData();
+    await _updateHourIndex();
+    await _updateThemeAndIcon();
+    return Future.delayed(const Duration(seconds: 0));
   }
 
   _updateHourIndex() async {
@@ -154,126 +160,131 @@ class _WeatherPageState extends State<WeatherPage> {
 
       return '${value.toString()}$unit';
     }
-
     final hourlyData = WeatherPage.weatherData['hourly'];
-
     final temperature =
         hourlyData?['temperature_2m']?[WeatherPage._closestHourIndex];
 
     final weatherCode =
         hourlyData?['weather_code']?[WeatherPage._closestHourIndex];
-
     return SizedBox(
       height: 100.h,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            AutoSizeText(
-              removeDiacritics(
-                  WeatherPage.weatherData['city'].toString().toUpperCase()),
-              style: TextStyle(
-                fontSize: 3.sh,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              maxLines: 1,
-            ),
-            AutoSizeText(
-              WeatherPage.weatherData['country'].toString().toUpperCase(),
-              style: TextStyle(
-                fontSize: 2.sh,
-                color: Colors.white,
-              ),
-              maxLines: 1,
-            ),
-            SizedBox(height: 1.h),
-            AutoSizeText(
-              DateFormat('EEEE')
-                  .format(WeatherPage._currentDateTime)
-                  .toUpperCase(),
-              style: TextStyle(
-                fontSize: 8.sw,
-                color: Colors.white,
-                fontWeight: FontWeight.w200,
-              ),
-              maxLines: 1,
-            ),
-            AutoSizeText(
-              DateFormat('MMMM d')
-                  .format(WeatherPage._currentDateTime)
-                  .toUpperCase(),
-              style: TextStyle(
-                  fontSize: 10.sw,
+      child: RefreshIndicator(
+        onRefresh: _handleRefresh,
+        strokeWidth: 3.5,
+        color: Colors.white,
+        backgroundColor: Colors.transparent,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              AutoSizeText(
+                removeDiacritics(
+                    WeatherPage.weatherData['city'].toString().toUpperCase()),
+                style: TextStyle(
+                  fontSize: 2.5.sh,
+                  fontWeight: FontWeight.bold,
                   color: Colors.white,
-                  fontWeight: FontWeight.w600),
-              maxLines: 1,
-            ),
-            SizedBox(height: 2.h),
-            AutoSizeText(
-              translateAndFormat(temperature, '°C'),
-              style: TextStyle(
-                fontSize: 36.sp,
-                color: Colors.white.withOpacity(0.75),
+                ),
+                maxLines: 1,
+                textAlign: TextAlign.center,
               ),
-              maxLines: 1,
-            ),
-            Image.asset(
-              gaplessPlayback: true,
-              WeatherPage._currentMainIcon!,
-              fit: BoxFit.scaleDown,
-              width: 50.sp,
-              height: 50.sp,
-            ),
-            AutoSizeText(
-              WeatherPage.weatherService
-                  .getWeatherDescription(weatherCode)
-                  .toUpperCase(),
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+              AutoSizeText(
+                WeatherPage.weatherData['country'].toString().toUpperCase(),
+                style: TextStyle(
+                  fontSize: 2.sh,
+                  color: Colors.white,
+                ),
+                maxLines: 1,
               ),
-              maxLines: 1,
-            ),
-            SizedBox(height: 1.h),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 6,
-                childAspectRatio: 0.85, // Adjust this value to fit your design
+              SizedBox(height: 1.h),
+              AutoSizeText(
+                DateFormat('EEEE')
+                    .format(WeatherPage._currentDateTime)
+                    .toUpperCase(),
+                style: TextStyle(
+                  fontSize: 8.sw,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w200,
+                ),
+                maxLines: 1,
               ),
-              itemCount: WeatherPage._hourlyIcons?.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      WeatherPage._hourlyIcons![index],
-                      width: 40, // Adjust the width as needed
-                      height: 40, // Adjust the height as needed
-                      fit: BoxFit.contain,
-                    ),
-                    AutoSizeText(
-                      DateFormat.j().format(
-                        DateTime.parse(hourlyData['time'][index]),
+              AutoSizeText(
+                DateFormat('MMMM d')
+                    .format(WeatherPage._currentDateTime)
+                    .toUpperCase(),
+                style: TextStyle(
+                    fontSize: 10.sw,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600),
+                maxLines: 1,
+              ),
+              SizedBox(height: 2.h),
+              AutoSizeText(
+                translateAndFormat(temperature, '°C'),
+                style: TextStyle(
+                  fontSize: 36.sp,
+                  color: Colors.white.withOpacity(0.75),
+                ),
+                maxLines: 1,
+              ),
+              Image.asset(
+                gaplessPlayback: true,
+                WeatherPage._currentMainIcon!,
+                fit: BoxFit.scaleDown,
+                width: 50.sp,
+                height: 50.sp,
+              ),
+              AutoSizeText(
+                WeatherPage.weatherService
+                    .getWeatherDescription(weatherCode)
+                    .toUpperCase(),
+                style: TextStyle(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                maxLines: 1,
+              ),
+              SizedBox(height: 1.h),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 6,
+                  childAspectRatio:
+                      0.85, // Adjust this value to fit your design
+                ),
+                itemCount: WeatherPage._hourlyIcons?.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        WeatherPage._hourlyIcons![index],
+                        width: 40, // Adjust the width as needed
+                        height: 40, // Adjust the height as needed
+                        fit: BoxFit.contain,
                       ),
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.white,
+                      AutoSizeText(
+                        DateFormat.j().format(
+                          DateTime.parse(hourlyData['time'][index]),
+                        ),
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
                       ),
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                    ),
-                  ],
-                );
-              },
-            ),
-          ],
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

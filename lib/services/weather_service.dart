@@ -85,8 +85,18 @@ class WeatherService with WeatherConditions {
       List<Placemark> placemarks =
           await placemarkFromCoordinates(position.latitude, position.longitude);
       Placemark place = placemarks[0];
+      String parseLocation(Placemark place) {
+        if (place.locality != '') {
+          return '${place.locality}, ${place.administrativeArea}';
+        }
+        if (place.subAdministrativeArea != '') {
+          return '${place.administrativeArea}, ${place.subAdministrativeArea}';
+        }
+        return '${place.administrativeArea}';
+      }
+
       return {
-        'city': place.locality ?? 'Unknown',
+        'city': parseLocation(place),
         'country': place.country ?? 'Unknown',
         'latitude': position.latitude.toString(),
         'longitude': position.longitude.toString()
@@ -173,17 +183,7 @@ class WeatherService with WeatherConditions {
 
   // PUBLIC API
   Future<Map<String, dynamic>> getWeatherData() async {
-    // if data is empty, fetch it
-    if (_publicWeatherData.isEmpty) {
-      await _updateWeatherData();
-    } else {
-      // if data is outdated, update it
-      final today = DateFormat.yMd().format(DateTime.now());
-      final lastUpdate = _publicWeatherData['last_updated'];
-      if (today != lastUpdate) {
-        await _updateWeatherData();
-      }
-    }
+    await _updateWeatherData();
     return _publicWeatherData;
   }
 
