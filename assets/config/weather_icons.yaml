@@ -1,0 +1,95 @@
+weather_icons:
+  main_icon:
+    day:
+      'sunrise':
+        - assets/gif/day/sunrise.gif
+        - assets/gif/day/sunrise_1.gif
+      'sunset':
+        - assets/gif/day/sunset.gif
+        - assets/gif/day/sunset_1.gif
+      'hot':
+        - assets/gif/day/hot.gif
+        - assets/gif/day/hot_1.gif
+      'windy':
+        - assets/gif/day/windy.gif
+      [0, 1]:
+        - assets/gif/day/sunny.gif
+        - assets/gif/day/sunny_1.gif
+      [2]:
+        - assets/gif/day/partly_cloudy.gif
+        - assets/gif/day/cloudy.gif
+        - assets/gif/day/cloudy_1.gif
+      [3]:
+        - assets/gif/day/overcast.gif
+      [45, 48]:
+        - assets/gif/day/foggy.gif
+      [51, 53, 55, 56, 57]:
+        - assets/gif/day/drizzle.gif
+      [61,66,80]:
+        - assets/gif/day/light_rain.gif
+      [63,65,67,81,82]:
+        - assets/gif/day/heavy_rain.gif
+      [95,96,99]:
+        - assets/gif/day/thunderstorm.gif
+    night:
+      'hot':
+        - assets/gif/night/hot.gif
+      'windy':
+        - assets/gif/night/windy.gif
+      [0,1]:
+        - assets/gif/night/no_cloud.gif
+      [2]:
+        - assets/gif/night/cloudy.gif
+        - assets/gif/night/cloudy_1.gif
+      [3]:
+        - assets/gif/night/overcast.gif
+      [45, 48]:
+        - assets/gif/night/foggy.gif
+      [51, 53, 55, 56, 57, 61, 66, 80]:
+        - assets/gif/night/rain.gif
+      [63,65,67,81,82]:
+        - assets/gif/night/showers.gif
+      [95,96,99]:
+        - assets/gif/night/thunderstorm.gif
+    winter:
+      [71, 73, 75, 77, 85, 86]:
+        - assets/gif/winter/snowfall.gif
+        - assets/gif/winter/snowfall_1.gif
+        - assets/gif/winter/snowman.gif
+  sub_icon:
+    day:
+      [0,1]:
+        - assets/gif/sub_icon/sunny.gif
+        - assets/gif/sub_icon/sunny_1.gif
+        - assets/gif/sub_icon/sunny_2.gif
+      [2]:
+        - assets/gif/sub_icon/cloudy_day.gif
+      [3]:
+        - assets/gif/sub_icon/overcast.gif
+      [45, 48]:
+        - assets/gif/sub_icon/foggy.gif  
+      [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82]:
+        - assets/gif/sub_icon/rain.gif
+      [95]:
+        - assets/gif/sub_icon/thunderstorm.gif
+      [96,99]:
+        - assets/gif/sub_icon/hail.gif
+    night:
+      [0,1]:
+        - assets/gif/sub_icon/clear_night.gif
+      [2]:
+        - assets/gif/sub_icon/cloudy_night.gif
+      [3]:
+        - assets/gif/sub_icon/overcast.gif
+      [45, 48]:
+        - assets/gif/sub_icon/foggy.gif  
+      [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82]:
+        - assets/gif/sub_icon/rain.gif
+      [95]:
+        - assets/gif/sub_icon/thunderstorm.gif
+      [96,99]:
+        - assets/gif/sub_icon/hail.gif
+    winter:
+      [71, 73, 75, 77, 85, 86]:
+        - assets/gif/sub_icon/snowflake.gif
+        - assets/gif/sub_icon/snowfall.gif

@@ -1,43 +1,32 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:skies/pages/weather_page.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:flutter/services.dart';
 
-void main() {
-  runApp(const MainApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    systemNavigationBarColor: Colors.transparent,
+  ));
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-  static const Map<String, LinearGradient> theme_day = {
-    'no_rain': LinearGradient(
-        colors: [
-          Color(0xff3F28CF),
-          Color(0xff5A6AC0),
-          Color(0xff4CBAE9),
-          Color(0xffE89153)
-        ],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        stops: [0.0, 1 / 3, 2 / 3, 1.0],
-        tileMode: TileMode.clamp,
-        transform: GradientRotation(-pi)
-        )
-  };
-  static Map<String, dynamic> theme_night = {};
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.transparent,
-        extendBodyBehindAppBar: true,
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: theme_day['no_rain'],
-          ),
+    return ResponsiveSizer(builder: (context, orientation, deviceType) {
+      return MaterialApp(
+        theme: ThemeData(
+          fontFamily: GoogleFonts.comfortaa().fontFamily,
         ),
-      )
-    );
-}
-
-
+        debugShowCheckedModeBanner: false,
+        home: WeatherPage(),
+      );
+    });
+  }
 }
