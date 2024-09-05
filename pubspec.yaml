@@ -1,19 +1,52 @@
 name: skies
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.4.4 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
+  auto_size_text: ^3.0.0
+  diacritic: ^0.1.5
   flutter:
     sdk: flutter
+  flutter_gif: ^0.0.4
+  flutter_localizations:
+    sdk: flutter
+  flutter_translate: ^4.0.0
+  gap: ^3.0.1
+  geocoding: ^3.0.0
+  geolocator: ^13.0.1
+  geolocator_android: ^4.6.1
+  geolocator_apple: ^2.3.7
+  google_fonts: ^6.2.1
+  http: ^1.2.2
+  intl: ^0.19.0
+  logging: ^1.2.0
+  path_provider: ^2.1.4
+  responsive_sizer: ^3.3.1
+  transparent_image: ^2.0.1
+  yaml: ^3.1.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
 
+flutter_launcher_icons:
+  android: 'launcher_icon'
+  min_sdk_android: 21
+  image_path: "assets/logo/skies.png"
+  ios: true
+  remove_alpha_ios: true
 flutter:
   uses-material-design: true
+  assets:
+    - assets/config/
+    - assets/logo/
+    - assets/gif/day/
+    - assets/gif/night/
+    - assets/gif/winter/
+    - assets/gif/sub_icon/
