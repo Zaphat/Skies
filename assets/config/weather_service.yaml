@@ -1,0 +1,13 @@
+weather_api:
+  base_url: "https://api.open-meteo.com/v1/forecast?"
+  query_details:
+    - hourly:
+        - temperature_2m
+        - weather_code
+        - wind_speed_10m
+    - daily:
+        - sunrise
+        - sunset
+    - timezone: auto
+    - forecast_days: 1
+    - models: best_match
